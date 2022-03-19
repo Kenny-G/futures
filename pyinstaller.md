@@ -1,7 +1,7 @@
 ## pyinstaller no icon 
 
 ```
-pyinstaller -F -w -i apple.ico futures.py --noconsole
+pyinstaller -F -w -i apple.ico futures.py
 ```
 
 
@@ -30,12 +30,14 @@ pyinstaller -F -w -i apple.ico futures.py --noconsole
 - ### generate spec file
 
 ```shell
-pyi-makespec -F -w futures.py
+pyi-makespec  -F -w -i apple.ico futures.py
 ```
 
 ​	-F to generate only one file
 
 ​	-w not show window when running
+
+​	-i  apple.ico : to use apple.ico also as the Taskbar icon
 
 ​	this will generate futures.spec file like this
 
@@ -91,10 +93,8 @@ exe = EXE(pyz,
 - ### run pyinstaller
 
 ```shell
-pyinstaller -F -w -i apple.ico futures.spec --noconsole
+pyinstaller  futures.spec 
 ```
-
-​	-i  apple.ico : to use apple.ico also as the Taskbar icon
 
 
 
