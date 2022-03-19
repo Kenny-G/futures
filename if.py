@@ -20,6 +20,8 @@ class ExamplePanel(wx.Panel):
         grid = wx.GridBagSizer(hgap=8,vgap=8)
         
         self.logger = wx.TextCtrl(self, size=(1000,int(1000*0.618)), style=wx.TE_MULTILINE | wx.TE_READONLY)
+        self.logger.SetForegroundColour(wx.WHITE)
+        self.logger.SetBackgroundColour(wx.BLACK)
         self.logger.SetEditable(False)
         hSizer.Add(self.logger, 0, wx.ALL, 6)
 
