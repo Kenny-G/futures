@@ -167,10 +167,17 @@ class ProduceThread(threading.Thread):
         str2 = "{} {} 合约交易量净多:  {}\n".format(self.timestr, strName, total_delta)
         self.lay.logger.AppendText(str2)
 
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
+
 def main():
     app = wx.App(False)
     frame = wx.Frame(None, 100, '期指合约', size = wx.Size(1400, int(1200*0.618)))
-    icon = wx.Icon('apple.ico', wx.BITMAP_TYPE_ICO)
+    iconPath = 'apple.ico'
+    iconPath= resource_path(iconPath)
+    icon = wx.Icon(iconPath, wx.BITMAP_TYPE_ICO)
     frame.SetIcon(icon)  
 
     panel = ExamplePanel(frame)
