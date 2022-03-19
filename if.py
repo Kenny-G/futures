@@ -58,6 +58,7 @@ class ExamplePanel(wx.Panel):
         self.logger.AppendText("设置时间信息: " + timestr + "\n")
         self.logger.AppendText("合约净多变化量 开始生成, 请稍候......\n\n")
         self.produceBt.Enable(False)
+        self.produceWeekBt.Enable(False)
         ProduceThread(self, 1)
 
     def OnClickProduceWeek(self, event):
@@ -65,6 +66,7 @@ class ExamplePanel(wx.Panel):
         timestr = date1.FormatISODate()
         self.logger.AppendText("设置时间信息: " + timestr + "\n")
         self.logger.AppendText("合约交易量净多 开始生成, 请稍候......\n\n")
+        self.produceBt.Enable(False)
         self.produceWeekBt.Enable(False)
         ProduceThread(self, 2)
 
@@ -82,24 +84,27 @@ class ProduceThread(threading.Thread):
         self.timestr = date1.FormatISODate()
 
         self.driver = webdriver.PhantomJS()
-        self.driver.get('http://www.cffex.com.cn/ccpm')
-        self.driver.find_element_by_id('actualDate').clear()
-        self.driver.find_element_by_id('actualDate').send_keys(self.timestr)
 
-        self.select = Select(self.driver.find_element_by_id('selectSec'))
+        try:
+            self.driver.get('http://www.cffex.com.cn/ccpm')
+            self.driver.find_element_by_id('actualDate').clear()
+            self.driver.find_element_by_id('actualDate').send_keys(self.timestr)
 
-        #lay.logger.AppendText(self.timestr + "生成完成\n")
+            self.select = Select(self.driver.find_element_by_id('selectSec'))
 
-        if self.method == 1:
-            self.getDataByName('IC')
-            self.getDataByName('IF')
-            self.getDataByName('IH')
-            lay.produceBt.Enable(True)
-        elif self.method == 2:
-            self.getWeekDataByName('IC')
-            self.getWeekDataByName('IF')
-            self.getWeekDataByName('IH')
-            lay.produceWeekBt.Enable(True)
+            if self.method == 1:
+                self.getDataByName('IC')
+                self.getDataByName('IF')
+                self.getDataByName('IH')
+            elif self.method == 2:
+                self.getWeekDataByName('IC')
+                self.getWeekDataByName('IF')
+                self.getWeekDataByName('IH')
+            self.lay.produceBt.Enable(True)
+            self.lay.produceWeekBt.Enable(True)
+            self.driver.quit()
+        except Exception as e:
+            self.driver.quit()
 
         lay.logger.AppendText("\n")
 
