@@ -19,7 +19,7 @@ class ExamplePanel(wx.Panel):
         hSizer = wx.BoxSizer(wx.HORIZONTAL)
         grid = wx.GridBagSizer(hgap=8,vgap=8)
         
-        self.logger = wx.TextCtrl(self, size=(1000,int(1000*0.618)), style=wx.TE_MULTILINE | wx.TE_READONLY)
+        self.logger = wx.TextCtrl(self, size=(1000,int(1000*0.618)), style=wx.TE_MULTILINE | wx.TE_READONLY|wx.TE_RICH)
         self.logger.SetForegroundColour(wx.WHITE)
         self.logger.SetBackgroundColour(wx.BLACK)
         self.logger.SetEditable(False)
@@ -106,6 +106,7 @@ class ProduceThread(threading.Thread):
             self.lay.produceWeekBt.Enable(True)
             self.driver.quit()
         except Exception as e:
+            self.lay.logger.AppendText("unexpected error")
             self.driver.quit()
 
         lay.logger.AppendText("\n")
@@ -169,6 +170,9 @@ class ProduceThread(threading.Thread):
 def main():
     app = wx.App(False)
     frame = wx.Frame(None, 100, '期指合约', size = wx.Size(1400, int(1200*0.618)))
+    icon = wx.Icon('apple.ico', wx.BITMAP_TYPE_ICO)
+    frame.SetIcon(icon)  
+
     panel = ExamplePanel(frame)
     frame.Show()
     app.MainLoop()
