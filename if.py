@@ -7,6 +7,7 @@ from threading import Thread
 import time
 import math
 from time import sleep
+import sys
 
 from selenium import webdriver
 from bs4 import BeautifulSoup
@@ -88,7 +89,7 @@ class ProduceThread(threading.Thread):
         self.driver = webdriver.PhantomJS()
 
         try:
-            self.driver.get('http://www.cffex.com.cn/ccpm')
+            self.driver.get('http://www.cffex.com.cn/ccpm/')
             self.driver.find_element_by_id('actualDate').clear()
             self.driver.find_element_by_id('actualDate').send_keys(self.timestr)
 
@@ -98,10 +99,12 @@ class ProduceThread(threading.Thread):
                 self.getDataByName('IC')
                 self.getDataByName('IF')
                 self.getDataByName('IH')
+                self.getDataByName('IM')
             elif self.method == 2:
                 self.getWeekDataByName('IC')
                 self.getWeekDataByName('IF')
                 self.getWeekDataByName('IH')
+                self.getWeekDataByName('IM')
             self.lay.produceBt.Enable(True)
             self.lay.produceWeekBt.Enable(True)
             self.driver.quit()
